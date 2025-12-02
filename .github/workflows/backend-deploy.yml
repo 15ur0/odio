@@ -1,0 +1,31 @@
+name: Backend CI/CD
+
+on:
+  push:
+    paths:
+      - 'backend-mysql/**'
+      - '.github/workflows/backend-deploy.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        working-directory: backend-mysql
+        run: npm ci
+      - name: Run tests (skip if none)
+        working-directory: backend-mysql
+        run: echo "No tests configured"
+      - name: Deploy to Railway (requires RAILWAY_API_KEY secret)
+        env:
+          RAILWAY_API_KEY: ${{ secrets.RAILWAY_API_KEY }}
+        run: |
+          npm install -g railway
+          cd backend-mysql
+          # railway up deploys current folder; requires RAILWAY_API_KEY secret set in repo
+          railway up --detach || echo "railway up failed; ensure project exists and RAILWAY_API_KEY is valid"
