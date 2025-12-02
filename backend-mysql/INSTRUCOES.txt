@@ -1,0 +1,11 @@
+Passos para rodar localmente:
+
+1. Copie .env.example para .env e preencha com suas credenciais MySQL.
+2. Instale dependências:
+   cd backend-mysql
+   npm install
+3. Inicie o servidor:
+   npm run dev
+
+Se preferir criar o banco manualmente, execute:
+   mysql -u USUARIO -p < schema.sql

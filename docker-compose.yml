@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: pim-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: # lê senha sem eco
+      MYSQL_DATABASE: DB_USER=${DB_USER:-root}
+    ports:
+      - "read -r -p "Usuário do MySQL (padrão root): " DB_USER:3306"
+    volumes:
+      - pim_db_data:/var/lib/mysql
+volumes:
+  pim_db_data:
